@@ -140,6 +140,8 @@ async function seedDatabase(): Promise<void> {
   } catch (err) {
     console.log(err);
     process.exit(1);
+  } finally {
+    await client.close();
   }
 }
 
