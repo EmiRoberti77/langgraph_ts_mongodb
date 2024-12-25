@@ -30,9 +30,13 @@ async function startServer() {
 
     app.post("/chat", async (req: Request, res: Response) => {
       const initialMessage = req.body.message;
-      const threadId = new Date().toString();
+      const threadId = Math.floor(Math.random() * 10000);
       try {
-        const response = await callAgent(mongoClient, initialMessage, threadId);
+        const response = await callAgent(
+          mongoClient,
+          initialMessage,
+          threadId.toString()
+        );
         res.status(200).json({
           response,
           threadId,
@@ -43,10 +47,13 @@ async function startServer() {
     });
 
     app.post("/chat/:threadId", async (req: Request, res: Response) => {
-      const { threaId } = req.params;
+      const { threadId } = req.params;
       const { message } = req.body;
       try {
-        const response = await callAgent(mongoClient, message, threaId);
+        const response = await callAgent(mongoClient, message, threadId);
+        res.status(200).json({
+          response,
+        });
       } catch (err) {
         console.log(err);
       }
